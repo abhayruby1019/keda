@@ -1,40 +1,15 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: your-scaledobject
-  namespace: your-namespace
+  name: cron-scaledobject
+  namespace: default
 spec:
   scaleTargetRef:
-    name: your-deployment
-  pollingInterval: 15   # Optional: adjust the polling interval (in seconds)
-  minReplicaCount: 0    # Optional: set the minimum replica count
-  maxReplicaCount: 1    # Optional: set the maximum replica count
+    name: sample-deployment
   triggers:
   - type: cron
     metadata:
-      timezone: "UTC"   # Optional: set the timezone
-    cronExpression: "0 20 * * *"  # Scale down at 8 pm UTC
-    cooldownPeriod: 300  # Optional: set the cooldown period in seconds
-
----
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: your-deployment
-  namespace: your-namespace
-spec:
-  replicas: 1  # Set your initial replica count
-  selector:
-    matchLabels:
-      app: your-app
-  template:
-    metadata:
-      labels:
-        app: your-app
-    spec:
-      containers:
-      - name: your-container
-        image: your-image:tag
-        ports:
-        - containerPort: 80  # Adjust the port as per your deployment
+      timezone: Asia/Kolkata
+      start: 30 23 * * *
+      end: 45 23 * * *
+      desiredReplicas: "1"
